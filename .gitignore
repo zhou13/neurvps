@@ -1,0 +1,8 @@
+/neurvps/models/cpp/build/
+/data
+/logs
+.autoenv*
+.idea/
+*.pyc
+/last_err.npz
+/error.npz

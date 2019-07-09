@@ -1,0 +1,45 @@
+io:
+  logdir: logs/
+  datadir: data/tmm17/
+  dataset: TMM17
+  resume_from:
+  num_workers: 4
+  tensorboard_port: 0
+  validation_interval: 8000
+  validation_debug: 160
+  focal_length: 1.0
+  num_vpts: 1
+  augmentation_level: 2
+
+model:
+  batch_size: 8
+  im2col_step: 11
+  backbone: stacked_hourglass
+  depth: 4
+  num_stacks: 1
+  num_blocks: 1
+
+  fc_channel: 1024
+
+  # reg2classfication
+  smp_pos: 1
+  smp_neg: 1
+  smp_rnd: 3
+  smp_multiplier: 2
+  multires:
+    - 0.0051941870036646
+    - 0.0200483803479500
+    - 0.0774278195486317
+    - 0.2995648108645650
+  output_stride: 4
+  upsample_scale: 1
+
+  conic_6x: False
+
+optim:
+  name: Adam
+  lr: 3.0e-4
+  amsgrad: True
+  weight_decay: 3.0e-4
+  max_epoch: 50
+  lr_decay_epoch: 30
