@@ -20,7 +20,7 @@ NeurVPS is an end-to-end trainable deep network with *geometry-inspired* convolu
 | ------------------------------------------------------------ | ------------------------------------------------------------ | -------------------------------------- |
 | ![su3_AA6](figs/su3_AA6.svg)                                 | ![tmm17_AA20](figs/tmm17_AA20.svg)                           | ![scannet_AA20](figs/scannet_AA20.svg) |
 
-Here, the x-axis represents the angular error of the detected vanishing points and the y-axis represents the percentage of the results whose error is less than that. Our conic convolutional networks outperform all the baseline methods and previous state-of-the-art vanishing point detection approaches, while naive CNN implementations might underperform those traidional methods, espeically in the high-accuracy regions.
+Here, the x-axis represents the angular error of the detected vanishing points and the y-axis represents the percentage of the results whose error is less than that. Our conic convolutional networks outperform all the baseline methods and previous state-of-the-art vanishing point detection approaches, while naive CNN implementations might underperform those traditional methods, espeically in the high-accuracy regions.
 
 ### Code Structure
 
@@ -103,7 +103,7 @@ python ./train.py -d 0,1 --identifier tmm17 config/tmm17.yaml
 python ./train.py -d 0,1 --identifier scannet config/scannet.yaml
 ```
 
-The checkpoints and logs will be written to `logs/` accordingly. It has been reported that it is possible to achieve  higher performance with 4-GPU training, though the training process is more volatile.
+The checkpoints and logs will be written to `logs/` accordingly. It has been reported that it is possible to achieve higher performance with 4-GPU training, though the training process is more volatile.
 
 ### Pre-trained Models
 
