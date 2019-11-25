@@ -123,7 +123,7 @@ python eval.py -d 0 logs/YOUR_LOG/config.yaml logs/YOUR_LOG/checkpoint_best.pth.
 #### What is the unit of focal length in the yaml and why do I need it?
 **A:** The focal length in our implementation is in the unit of 2/w pixel (w is the image width. only a square image is supported). This follows the convention of the OpenGL projection matrix so that to make it resolution invariant.  The focal length is used for uniform sampling of the position of vanishing points. If it is not known, you can set it to some common focal length for your catorgories of images, as we do in [config/tmm17.yaml](https://github.com/zhou13/neurvps/blob/master/config/tmm17.yaml).
 
-You also can refer to the function `to_label` and `to_pixel`, which convert the 3D line direction from and to a 2D vanishing point.
+You can also check the function `to_label` and `to_pixel`, which use the focal length to convert the 3D line direction from and to a 2D vanishing point.
 
 #### I have a question. How could I get help?
 **A:** You can post an issue on Github, which may help other people that have the same question. You can also send me an email if you think that is more appropriate.
@@ -133,7 +133,7 @@ You also can refer to the function `to_label` and `to_pixel`, which convert the 
 If you find NeurVPS useful in your research, please consider citing:
 
 ```
-@inproceedings{zhou2019end,
+@inproceedings{zhou2019neurvps,
  author={Zhou, Yichao and Qi, Haozhi and Huang, Jingwei and Ma, Yi},
  title={NeurVPS: Neural Vanishing Point Scanning via Conic Convolution},
  booktitle={NeurIPS},
