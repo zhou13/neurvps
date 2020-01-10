@@ -91,7 +91,7 @@ def main():
     datadir = C.io.datadir
     kwargs = {
         "batch_size": batch_size,
-        "num_workers": C.io.num_workers,
+        "num_workers": C.io.num_workers if os.name != "nt" else 0,
         "pin_memory": True,
     }
     if C.io.dataset.upper() == "WIREFRAME":

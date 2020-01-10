@@ -6,7 +6,7 @@ io:
   num_workers: 4
   tensorboard_port: 0
   validation_interval: 8000
-  validation_debug: 160
+  validation_debug: 0
   focal_length: 1.0
   num_vpts: 1
   augmentation_level: 2
@@ -27,6 +27,7 @@ model:
   smp_rnd: 3
   smp_multiplier: 2
   multires:
+    # those magic numbers are calculated by misc/find-radius.py
     - 0.0051941870036646
     - 0.0200483803479500
     - 0.0774278195486317
@@ -38,8 +39,8 @@ model:
 
 optim:
   name: Adam
-  lr: 3.0e-4
+  lr: 1.0e-4
   amsgrad: True
-  weight_decay: 3.0e-4
-  max_epoch: 50
-  lr_decay_epoch: 30
+  weight_decay: 6.0e-4
+  max_epoch: 100
+  lr_decay_epoch: 60

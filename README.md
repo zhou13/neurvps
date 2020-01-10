@@ -14,13 +14,15 @@ NeurVPS is an end-to-end trainable deep network with *geometry-inspired* convolu
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ----------------------------------- |
 | ![blend](figs/su3.png)                                       | ![tmm17](figs/tmm17.png)                                     | ![scannet](figs/scannet.png)        |
 
+Some random sampled results can also be found in the [supplementary material](https://yichaozhou.com/publication/1905neurvps/appendix.pdf) of the paper.
+
 ### Quantitative Measures
 
 | [SceneCity Urban 3D (SU3)](https://arxiv.org/abs/1905.07482) | [Natural Scene (TMM17)](https://faculty.ist.psu.edu/zzhou/projects/vpdetection/) | [ScanNet](http://www.scan-net.org/)    |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | -------------------------------------- |
 | ![su3_AA6](figs/su3_AA6.svg)                                 | ![tmm17_AA20](figs/tmm17_AA20.svg)                           | ![scannet_AA20](figs/scannet_AA20.svg) |
 
-Here, the x-axis represents the angular error of the detected vanishing points and the y-axis represents the percentage of the results whose error is less than that. Our conic convolutional networks outperform all the baseline methods and previous state-of-the-art vanishing point detection approaches, while naive CNN implementations might underperform those traditional methods, espeically in the high-accuracy regions.
+Here, the x-axis represents the angle accuracy of the detected vanishing points and the y-axis represents the percentage of the results whose error is less than that. Our conic convolutional networks outperform all the baseline methods and previous state-of-the-art vanishing point detection approaches, while naive CNN implementations might under-perform those traditional methods, especially in the high-accuracy regions.
 
 ### Code Structure
 
@@ -108,7 +110,7 @@ The checkpoints and logs will be written to `logs/` accordingly. It has been rep
 ### Pre-trained Models
 
 You can download our reference pre-trained models from [Google
-Drive](https://drive.google.com/drive/folders/1srniSE2JD6ptAwc_QRnpl7uQnB5jLNIZ).  Those pretrained
+Drive](https://drive.google.com/drive/folders/1srniSE2JD6ptAwc_QRnpl7uQnB5jLNIZ).  Those pre-trained
 models should be able to reproduce the numbers in our paper.
 
 ### Evaluation
@@ -121,12 +123,15 @@ python eval.py -d 0 logs/YOUR_LOG/config.yaml logs/YOUR_LOG/checkpoint_best.pth.
 ### FAQ
 
 #### What is the unit of focal length in the yaml and why do I need it?
-**A:** The focal length in our implementation is in the unit of 2/w pixel (w is the image width. only a square image is supported). This follows the convention of the OpenGL projection matrix so that to make it resolution invariant.  The focal length is used for uniform sampling of the position of vanishing points. If it is not known, you can set it to some common focal length for your catorgories of images, as we do in [config/tmm17.yaml](https://github.com/zhou13/neurvps/blob/master/config/tmm17.yaml).
+**A:** The focal length in our implementation is in the unit of 2/w pixel (w is the image width. only a square image is supported). This follows the convention of the OpenGL projection matrix so that to make it resolution invariant.  The focal length is used for uniform sampling of the position of vanishing points. If it is not known, you can set it to some common focal length for your categories of images, as we do in [config/tmm17.yaml](https://github.com/zhou13/neurvps/blob/master/config/tmm17.yaml).
 
 You can also check the function `to_label` and `to_pixel`, which use the focal length to convert the 3D line direction from and to a 2D vanishing point.
 
 #### I have a question. How could I get help?
-**A:** You can post an issue on Github, which may help other people that have the same question. You can also send me an email if you think that is more appropriate.
+**A:** You can post an issue on Github, which might help other people that have the same question. You can also send me an email if you think that is more appropriate.
+
+### Acknowledgement
+We thank Yikai Li from SJTU and Jiajun Wu from MIT for pointing out an error in the data augmentation code for the TMM17 Natural Scene dataset.  This work is partially supported by the funding from Berkeley EECS Startup fund, Berkeley FHL Vive Center for Enhanced Reality, research grants from Sony Research, and Bytedance Research Lab (Silicon Valley).
 
 ### Citing NeurVPS
 

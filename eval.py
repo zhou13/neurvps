@@ -12,7 +12,11 @@ Options:
    -h --help                     Show this screen
    -d --devices <devices>        Comma seperated GPU devices [default: 0]
    -o --output <output>          Path to the output AA curve [default: error.npz]
-   --dump <output-dir>           Optionally, save the vanishing points in npz format
+   --dump <output-dir>           Optionally, save the vanishing points to npz format.
+                                 The coordinate of VPs is in the camera space, see
+                                 `to_label` and `to_pixel` in neurvps/models/vanishing_net.py
+                                 for more details.
+   --noimshow                    Do not show result
 """
 
 import os
@@ -102,7 +106,7 @@ def main():
         Dataset(C.io.datadir, split="valid"),
         batch_size=1,
         shuffle=False,
-        num_workers=C.io.num_workers,
+        num_workers=C.io.num_workers if os.name != "nt" else 0,
         pin_memory=True,
     )
 
@@ -151,10 +155,12 @@ def main():
     err = np.sort(np.array(err))
     np.savez(args["--output"], err=err)
     y = (1 + np.arange(len(err))) / len(loader) / n
-    plt.plot(err, y, label="Conic")
-    print(" | ".join([f"{AA(err, y, th):.3f}" for th in [0.2, 0.5, 1.0, 2.0, 4.0]]))
-    plt.legend()
-    plt.show()
+
+    if not args["--noimshow"]:
+        plt.plot(err, y, label="Conic")
+        print(" | ".join([f"{AA(err, y, th):.3f}" for th in [0.5, 1, 2, 5, 10, 20]]))
+        plt.legend()
+        plt.show()
 
 
 def sample_sphere(v, alpha, num_pts):

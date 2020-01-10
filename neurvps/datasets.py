@@ -128,8 +128,8 @@ class Tmm17Dataset(Dataset):
         vpts = np.array([[xy[0] / 256 - 1, 1 - xy[1] / 256, C.io.focal_length]])
         vpts[0] /= LA.norm(vpts[0])
 
-        image = np.rollaxis(image, 2)
         image, vpts = augment(image, vpts, idx // len(self.filelist))
+        image = np.rollaxis(image, 2)
         return (torch.tensor(image * 255).float(), {"vpts": torch.tensor(vpts).float()})
 
 

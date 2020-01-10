@@ -27,6 +27,7 @@ model:
   smp_rnd: 3
   smp_multiplier: 2
   multires:
+    # those magic numbers are calculated by misc/find-radius.py
     - 0.0013457768043554
     - 0.0051941870036646
     - 0.0200483803479500
