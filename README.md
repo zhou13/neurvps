@@ -14,7 +14,7 @@ NeurVPS is an end-to-end trainable deep network with *geometry-inspired* convolu
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ----------------------------------- |
 | ![blend](figs/su3.png)                                       | ![tmm17](figs/tmm17.png)                                     | ![scannet](figs/scannet.png)        |
 
-Some random sampled results can also be found in the [supplementary material](https://yichaozhou.com/publication/1905neurvps/appendix.pdf) of the paper.
+Random sampled results can be found in the [supplementary material](https://yichaozhou.com/publication/1905neurvps/appendix.pdf) of the paper.
 
 ### Quantitative Measures
 
