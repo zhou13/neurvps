@@ -140,8 +140,8 @@ If you find NeurVPS useful in your research, please consider citing:
 ```
 @inproceedings{zhou2019neurvps,
  author={Zhou, Yichao and Qi, Haozhi and Huang, Jingwei and Ma, Yi},
- title={NeurVPS: Neural Vanishing Point Scanning via Conic Convolution},
- booktitle={NeurIPS},
+ title={{NeurVPS}: Neural Vanishing Point Scanning via Conic Convolution},
+ booktitle={{NeurIPS}},
  year={2019}
 }
 ```
