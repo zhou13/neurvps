@@ -131,7 +131,7 @@ You can also check the function `to_label` and `to_pixel`, which use the focal l
 **A:** You can post an issue on Github, which might help other people that have the same question. You can also send me an email if you think that is more appropriate.
 
 ### Acknowledgement
-We thank Yikai Li from SJTU and Jiajun Wu from MIT for pointing out an error in the data augmentation code for the TMM17 Natural Scene dataset.  This work is partially supported by the funding from Berkeley EECS Startup fund, Berkeley FHL Vive Center for Enhanced Reality, research grants from Sony Research, and Bytedance Research Lab (Silicon Valley).
+We thank Yikai Li from SJTU and Jiajun Wu from MIT for pointing out a bug in the data augmentation for the TMM17 Natural Scene dataset.  This work is supported by a research grant from Sony Research.
 
 ### Citing NeurVPS
 
