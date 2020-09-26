@@ -20,7 +20,7 @@ Random sampled results can be found in the [supplementary material](https://yich
 
 | [SceneCity Urban 3D (SU3)](https://arxiv.org/abs/1905.07482) | [Natural Scene (TMM17)](https://faculty.ist.psu.edu/zzhou/projects/vpdetection/) | [ScanNet](http://www.scan-net.org/)    |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | -------------------------------------- |
-| ![su3_AA6](figs/su3_AA6.svg)                                 | ![tmm17_AA12](figs/tmm17_AA12.svg)                           | ![scannet_AA20](figs/scannet_AA20.svg) |
+| <img src="figs/su3_AA6.svg" width="260">                     | <img src="figs/tmm17_AA12.svg" width="260">                  | <img src="figs/scannet_AA20.svg" width="260"> |
 
 Here, the x-axis represents the angle accuracy of the detected vanishing points and the y-axis represents the percentage of the results whose error is less than that. Our conic convolutional networks outperform all the baseline methods and previous state-of-the-art vanishing point detection approaches, while naive CNN implementations might under-perform those traditional methods, especially in the high-accuracy regions.
 
