@@ -46,6 +46,14 @@ from neurvps.datasets import Tmm17Dataset, ScanNetDataset, WireframeDataset
 
 
 def AA(x, y, threshold):
+    """
+    Concatenate threshold.
+
+    Args:
+        x: (int): write your description
+        y: (int): write your description
+        threshold: (float): write your description
+    """
     index = np.searchsorted(x, threshold)
     x = np.concatenate([x[:index], [threshold]])
     y = np.concatenate([y[:index], [threshold]])
@@ -53,6 +61,11 @@ def AA(x, y, threshold):
 
 
 def main():
+    """
+    Main function.
+
+    Args:
+    """
     args = docopt(__doc__)
     config_file = args["<yaml-config>"]
     C.update(C.from_yaml(filename=config_file))
@@ -164,6 +177,14 @@ def main():
 
 
 def sample_sphere(v, alpha, num_pts):
+    """
+    Return spherical harmonic vectors from spherical harmonic plane.
+
+    Args:
+        v: (todo): write your description
+        alpha: (float): write your description
+        num_pts: (int): write your description
+    """
     v1 = orth(v)
     v2 = np.cross(v, v1)
     v, v1, v2 = v[:, None], v1[:, None], v2[:, None]
@@ -175,6 +196,12 @@ def sample_sphere(v, alpha, num_pts):
 
 
 def orth(v):
+    """
+    Return the orthogonal product of v.
+
+    Args:
+        v: (array): write your description
+    """
     x, y, z = v
     o = np.array([0.0, -z, y] if abs(x) < abs(y) else [-z, 0.0, x])
     o /= LA.norm(o)

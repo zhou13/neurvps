@@ -39,6 +39,11 @@ from neurvps.datasets import Tmm17Dataset, ScanNetDataset, WireframeDataset
 
 
 def git_hash():
+    """
+    Determine hash of the git repo
+
+    Args:
+    """
     cmd = 'git log -n 1 --pretty="%h"'
     ret = subprocess.check_output(shlex.split(cmd)).strip()
     if isinstance(ret, bytes):
@@ -47,6 +52,12 @@ def git_hash():
 
 
 def get_outdir(identifier):
+    """
+    Retrieves outdir from the given identifier.
+
+    Args:
+        identifier: (int): write your description
+    """
     # load config
     name = str(datetime.datetime.now().strftime("%y%m%d-%H%M%S"))
     name += "-%s" % git_hash()
@@ -61,6 +72,11 @@ def get_outdir(identifier):
 
 
 def main():
+    """
+    Main function.
+
+    Args:
+    """
     args = docopt(__doc__)
     config_file = args["<yaml-config>"] or "config/wireframe.yaml"
     C.update(C.from_yaml(filename=config_file))

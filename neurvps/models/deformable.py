@@ -11,6 +11,12 @@ from torch.autograd.function import once_differentiable
 
 
 def load_cpp_ext(ext_name):
+    """
+    Load cuda cuda cuda. cuda
+
+    Args:
+        ext_name: (str): write your description
+    """
     root_dir = os.path.join(os.path.split(__file__)[0])
     src_dir = os.path.join(root_dir, "cpp")
     tar_dir = os.path.join(src_dir, "build", ext_name)
@@ -50,6 +56,22 @@ class DeformConvFunction(Function):
         deformable_groups,
         im2col_step,
     ):
+        """
+        Parameters ---------- inputs
+
+        Args:
+            ctx: (todo): write your description
+            input: (todo): write your description
+            offset: (todo): write your description
+            weight: (str): write your description
+            bias: (todo): write your description
+            stride: (int): write your description
+            padding: (todo): write your description
+            dilation: (todo): write your description
+            group: (todo): write your description
+            deformable_groups: (todo): write your description
+            im2col_step: (todo): write your description
+        """
         ctx.stride = _pair(stride)
         ctx.padding = _pair(padding)
         ctx.dilation = _pair(dilation)
@@ -80,6 +102,13 @@ class DeformConvFunction(Function):
     @staticmethod
     @once_differentiable
     def backward(ctx, grad_output):
+        """
+        Backward backward backward backward backward backward.
+
+        Args:
+            ctx: (todo): write your description
+            grad_output: (bool): write your description
+        """
         input, offset, weight, bias = ctx.saved_tensors
         grad_input, grad_offset, grad_weight, grad_bias = DCN.deform_conv_backward(
             input,
@@ -128,6 +157,22 @@ class DeformConv(nn.Module):
         im2col_step=11,
         bias=True,
     ):
+        """
+        Initialize the network.
+
+        Args:
+            self: (todo): write your description
+            in_channels: (int): write your description
+            out_channels: (int): write your description
+            kernel_size: (int): write your description
+            stride: (int): write your description
+            padding: (str): write your description
+            dilation: (todo): write your description
+            groups: (list): write your description
+            deformable_groups: (todo): write your description
+            im2col_step: (int): write your description
+            bias: (float): write your description
+        """
         global DCN
         DCN = load_cpp_ext("DCN")
         super(DeformConv, self).__init__()
@@ -165,6 +210,12 @@ class DeformConv(nn.Module):
             self.bias.requires_grad = False
 
     def reset_parameters(self):
+        """
+        Reset hyperparameters.
+
+        Args:
+            self: (todo): write your description
+        """
         nn.init.kaiming_uniform_(self.weight, a=math.sqrt(5))
         if self.bias is not None:
             if self.use_bias:
@@ -175,6 +226,14 @@ class DeformConv(nn.Module):
                 nn.init.zeros_(self.bias)
 
     def forward(self, input, offset):
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            input: (todo): write your description
+            offset: (todo): write your description
+        """
         assert (
             2 * self.deformable_groups * self.kernel_size[0] * self.kernel_size[1]
             == offset.shape[1]

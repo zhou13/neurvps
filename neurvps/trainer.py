@@ -24,6 +24,19 @@ class Trainer(object):
     def __init__(
         self, device, model, optimizer, train_loader, val_loader, batch_size, out
     ):
+        """
+        Initialize the model.
+
+        Args:
+            self: (todo): write your description
+            device: (todo): write your description
+            model: (todo): write your description
+            optimizer: (todo): write your description
+            train_loader: (todo): write your description
+            val_loader: (todo): write your description
+            batch_size: (int): write your description
+            out: (str): write your description
+        """
         self.device = device
 
         self.model = model
@@ -56,17 +69,36 @@ class Trainer(object):
         self.metrics = np.zeros(0)
 
     def run_tensorboard(self, board_out):
+        """
+        Run tensorboardboard.
+
+        Args:
+            self: (todo): write your description
+            board_out: (bool): write your description
+        """
         os.environ["CUDA_VISIBLE_DEVICES"] = ""
         p = subprocess.Popen(
             ["tensorboard", f"--logdir={board_out}", f"--port={C.io.tensorboard_port}"]
         )
 
         def killme():
+            """
+            Kill a sigterm process.
+
+            Args:
+            """
             os.kill(p.pid, signal.SIGTERM)
 
         atexit.register(killme)
 
     def _loss(self, result):
+        """
+        Compute loss loss
+
+        Args:
+            self: (todo): write your description
+            result: (todo): write your description
+        """
         losses = result["losses"]
         # Don't move loss label to other place.
         # If I want to change the loss, I just need to change this function.
@@ -99,6 +131,12 @@ class Trainer(object):
         return total_loss
 
     def validate(self):
+        """
+        Perform model validation of the model
+
+        Args:
+            self: (todo): write your description
+        """
         tprint("Running validation...", " " * 75)
         training = self.model.training
         self.model.eval()
@@ -160,6 +198,12 @@ class Trainer(object):
             self.model.train()
 
     def train_epoch(self):
+        """
+        Train the model.
+
+        Args:
+            self: (todo): write your description
+        """
         self.model.train()
         time = timer()
         for batch_idx, (image, target) in enumerate(self.train_loader):
@@ -199,6 +243,16 @@ class Trainer(object):
                 time = timer()
 
     def _write_metrics(self, size, total_loss, prefix, do_print=False):
+        """
+        Writes metrics to csv file.
+
+        Args:
+            self: (todo): write your description
+            size: (int): write your description
+            total_loss: (todo): write your description
+            prefix: (str): write your description
+            do_print: (todo): write your description
+        """
         for i, metrics in enumerate(self.metrics):
             for label, metric in zip(self.loss_labels, metrics):
                 self.writer.add_scalar(
@@ -222,6 +276,18 @@ class Trainer(object):
         return total_loss
 
     def plot(self, index, image, vpts, scores, ys, prefix):
+        """
+        Plot the image.
+
+        Args:
+            self: (todo): write your description
+            index: (int): write your description
+            image: (array): write your description
+            vpts: (todo): write your description
+            scores: (todo): write your description
+            ys: (todo): write your description
+            prefix: (str): write your description
+        """
         for idx, (vp, score, y) in enumerate(zip(vpts, scores, ys)):
             plt.imshow(image[0].cpu().numpy())
             color = (random.random(), random.random(), random.random())
@@ -244,6 +310,12 @@ class Trainer(object):
             plt.savefig(f"{prefix}_vpts_{idx}.jpg"), plt.close()
 
     def train(self):
+        """
+        Training function.
+
+        Args:
+            self: (todo): write your description
+        """
         plt.rcParams["figure.figsize"] = (24, 24)
         epoch_size = len(self.train_loader)
         start_epoch = self.iteration // epoch_size
@@ -253,6 +325,13 @@ class Trainer(object):
             self.train_epoch()
 
     def move(self, obj):
+        """
+        Move object to target object.
+
+        Args:
+            self: (todo): write your description
+            obj: (todo): write your description
+        """
         if isinstance(obj, torch.Tensor):
             return obj.to(self.device)
         if isinstance(obj, dict):
@@ -270,10 +349,22 @@ sm.set_array([])
 
 
 def c(x):
+    """
+    Convert x into a c ).
+
+    Args:
+        x: (int): write your description
+    """
     return sm.to_rgba(x)
 
 
 def imshow(im):
+    """
+    Show the image.
+
+    Args:
+        im: (int): write your description
+    """
     plt.close()
     plt.tight_layout()
     plt.imshow(im)
@@ -295,10 +386,23 @@ def pprint(*args):
 
 
 def _launch_tensorboard(board_out, port, out):
+    """
+    Launch a tensorboard process.
+
+    Args:
+        board_out: (bool): write your description
+        port: (int): write your description
+        out: (array): write your description
+    """
     os.environ["CUDA_VISIBLE_DEVICES"] = ""
     p = subprocess.Popen(["tensorboard", f"--logdir={board_out}", f"--port={port}"])
 
     def kill():
+        """
+        Kill a sigint.
+
+        Args:
+        """
         os.kill(p.pid, signal.SIGTERM)
 
     atexit.register(kill)

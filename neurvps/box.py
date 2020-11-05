@@ -60,6 +60,16 @@ class BoxKeyError(BoxError, KeyError, AttributeError):
 
 def _to_json(obj, filename=None,
              encoding="utf-8", errors="strict", **json_kwargs):
+    """
+    Serialize obj to a json formatted str.
+
+    Args:
+        obj: (todo): write your description
+        filename: (str): write your description
+        encoding: (str): write your description
+        errors: (todo): write your description
+        json_kwargs: (dict): write your description
+    """
     json_dump = json.dumps(obj,
                            ensure_ascii=False, **json_kwargs)
     if filename:
@@ -72,6 +82,16 @@ def _to_json(obj, filename=None,
 
 def _from_json(json_string=None, filename=None,
                encoding="utf-8", errors="strict", multiline=False, **kwargs):
+    """
+    Deserialize a json file.
+
+    Args:
+        json_string: (str): write your description
+        filename: (str): write your description
+        encoding: (str): write your description
+        errors: (todo): write your description
+        multiline: (bool): write your description
+    """
     if filename:
         with open(filename, 'r', encoding=encoding, errors=errors) as f:
             if multiline:
@@ -89,6 +109,17 @@ def _from_json(json_string=None, filename=None,
 def _to_yaml(obj, filename=None, default_flow_style=False,
              encoding="utf-8", errors="strict",
              **yaml_kwargs):
+    """
+    Serialize obj to yaml.
+
+    Args:
+        obj: (todo): write your description
+        filename: (str): write your description
+        default_flow_style: (bool): write your description
+        encoding: (str): write your description
+        errors: (todo): write your description
+        yaml_kwargs: (dict): write your description
+    """
     if filename:
         with open(filename, 'w',
                   encoding=encoding, errors=errors) as f:
@@ -104,6 +135,15 @@ def _to_yaml(obj, filename=None, default_flow_style=False,
 def _from_yaml(yaml_string=None, filename=None,
                encoding="utf-8", errors="strict",
                **kwargs):
+    """
+    Parse yaml from yaml file.
+
+    Args:
+        yaml_string: (str): write your description
+        filename: (str): write your description
+        encoding: (str): write your description
+        errors: (todo): write your description
+    """
     if filename:
         with open(filename, 'r',
                   encoding=encoding, errors=errors) as f:
@@ -119,6 +159,12 @@ def _from_yaml(yaml_string=None, filename=None,
 
 
 def _safe_key(key):
+    """
+    Convert a string.
+
+    Args:
+        key: (str): write your description
+    """
     try:
         return str(key)
     except UnicodeEncodeError:
@@ -172,6 +218,14 @@ def _camel_killer(attr):
 
 
 def _recursive_tuples(iterable, box_class, recreate_tuples=False, **kwargs):
+    """
+    Recursively iterate through iterable.
+
+    Args:
+        iterable: (todo): write your description
+        box_class: (todo): write your description
+        recreate_tuples: (bool): write your description
+    """
     out_list = []
     for i in iterable:
         if isinstance(i, dict):
@@ -228,6 +282,12 @@ def _conversion_checks(item, keys, box_config, check_only=False,
 
 
 def _get_box_config(cls, kwargs):
+    """
+    Return a box config.
+
+    Args:
+        cls: (callable): write your description
+    """
     return {
         # Internal use only
         '__converted': set(),
@@ -278,6 +338,12 @@ class Box(dict):
         return obj
 
     def __init__(self, *args, **kwargs):
+        """
+        Initialize a box box.
+
+        Args:
+            self: (todo): write your description
+        """
         self._box_config = _get_box_config(self.__class__, kwargs)
         if self._box_config['ordered_box']:
             self._box_config['__ordered_box_values'] = []
@@ -318,6 +384,13 @@ class Box(dict):
         self._box_config['__created'] = True
 
     def __add_ordered(self, key):
+        """
+        Add a key to the box.
+
+        Args:
+            self: (todo): write your description
+            key: (str): write your description
+        """
         if (self._box_config['ordered_box'] and
                 key not in self._box_config['__ordered_box_values']):
             self._box_config['__ordered_box_values'].append(key)
@@ -335,6 +408,12 @@ class Box(dict):
                 self[k].box_it_up()
 
     def __hash__(self):
+        """
+        : return : class : ~box21.
+
+        Args:
+            self: (dict): write your description
+        """
         if self._box_config['frozen_box']:
             hashing = 54321
             for item in self.items():
@@ -343,6 +422,12 @@ class Box(dict):
         raise TypeError("unhashable type: 'Box'")
 
     def __dir__(self):
+        """
+        Return a string containing all the dir.
+
+        Args:
+            self: (todo): write your description
+        """
         allowed = string.ascii_letters + string.digits + '_'
         kill_camel = self._box_config['camel_killer_box']
         items = set(dir(dict) + ['to_dict', 'to_json',
@@ -380,6 +465,14 @@ class Box(dict):
         return list(items)
 
     def get(self, key, default=None):
+        """
+        Get a value from the dict.
+
+        Args:
+            self: (todo): write your description
+            key: (todo): write your description
+            default: (todo): write your description
+        """
         try:
             return self[key]
         except KeyError:
@@ -390,12 +483,31 @@ class Box(dict):
             return default
 
     def copy(self):
+        """
+        Make a shallow copy of this instance.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.__class__(super(self.__class__, self).copy())
 
     def __copy__(self):
+        """
+        Returns a shallow copy of self.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.__class__(super(self.__class__, self).copy())
 
     def __deepcopy__(self, memodict=None):
+        """
+        Return a deep copy of this object.
+
+        Args:
+            self: (dict): write your description
+            memodict: (dict): write your description
+        """
         out = self.__class__()
         memodict = memodict or {}
         memodict[id(self)] = out
@@ -404,10 +516,25 @@ class Box(dict):
         return out
 
     def __setstate__(self, state):
+        """
+        Set the box state.
+
+        Args:
+            self: (todo): write your description
+            state: (dict): write your description
+        """
         self._box_config = state['_box_config']
         self.__dict__.update(state)
 
     def __getitem__(self, item, _ignore_default=False):
+        """
+        Return the value of an item.
+
+        Args:
+            self: (todo): write your description
+            item: (str): write your description
+            _ignore_default: (bool): write your description
+        """
         try:
             value = super(Box, self).__getitem__(item)
         except KeyError as err:
@@ -421,17 +548,42 @@ class Box(dict):
             return self.__convert_and_store(item, value)
 
     def keys(self):
+        """
+        The keys of the keys of the box.
+
+        Args:
+            self: (todo): write your description
+        """
         if self._box_config['ordered_box']:
             return self._box_config['__ordered_box_values']
         return super(Box, self).keys()
 
     def values(self):
+        """
+        Return a list of all the values
+
+        Args:
+            self: (todo): write your description
+        """
         return [self[x] for x in self.keys()]
 
     def items(self):
+        """
+        Return a list of ( key / value pairs.
+
+        Args:
+            self: (todo): write your description
+        """
         return [(x, self[x]) for x in self.keys()]
 
     def __get_default(self, item):
+        """
+        Return the default value of item.
+
+        Args:
+            self: (todo): write your description
+            item: (todo): write your description
+        """
         default_value = self._box_config['default_box_attr']
         if default_value is self.__class__:
             return self.__class__(__box_heritage=(self, item),
@@ -443,6 +595,12 @@ class Box(dict):
         return default_value
 
     def __box_config(self):
+        """
+        Return a dictionary of box - specific variables.
+
+        Args:
+            self: (todo): write your description
+        """
         out = {}
         for k, v in self._box_config.copy().items():
             if not k.startswith("__"):
@@ -450,6 +608,14 @@ class Box(dict):
         return out
 
     def __convert_and_store(self, item, value):
+        """
+        Convert a box value.
+
+        Args:
+            self: (todo): write your description
+            item: (str): write your description
+            value: (str): write your description
+        """
         if item in self._box_config['__converted']:
             return value
         if isinstance(value, dict) and not isinstance(value, Box):
@@ -479,6 +645,12 @@ class Box(dict):
         return value
 
     def __create_lineage(self):
+        """
+        Create the lineage
+
+        Args:
+            self: (todo): write your description
+        """
         if (self._box_config['__box_heritage'] and
                 self._box_config['__created']):
             past, item = self._box_config['__box_heritage']
@@ -487,6 +659,13 @@ class Box(dict):
             self._box_config['__box_heritage'] = None
 
     def __getattr__(self, item):
+        """
+        Return the value of an attribute.
+
+        Args:
+            self: (todo): write your description
+            item: (str): write your description
+        """
         try:
             try:
                 value = self.__getitem__(item, _ignore_default=True)
@@ -515,6 +694,14 @@ class Box(dict):
             return self.__convert_and_store(item, value)
 
     def __setitem__(self, key, value):
+        """
+        Set a configuration parameter.
+
+        Args:
+            self: (todo): write your description
+            key: (str): write your description
+            value: (str): write your description
+        """
         if (key != '_box_config' and self._box_config['__created'] and
                 self._box_config['frozen_box']):
             raise BoxError('Box is frozen')
@@ -526,6 +713,14 @@ class Box(dict):
         self.__create_lineage()
 
     def __setattr__(self, key, value):
+        """
+        Set an attribute in - value.
+
+        Args:
+            self: (todo): write your description
+            key: (str): write your description
+            value: (todo): write your description
+        """
         if (key != '_box_config' and self._box_config['frozen_box'] and
                 self._box_config['__created']):
             raise BoxError('Box is frozen')
@@ -556,6 +751,13 @@ class Box(dict):
         self.__create_lineage()
 
     def __delitem__(self, key):
+        """
+        Removes a box is removed.
+
+        Args:
+            self: (todo): write your description
+            key: (str): write your description
+        """
         if self._box_config['frozen_box']:
             raise BoxError('Box is frozen')
         super(Box, self).__delitem__(key)
@@ -564,6 +766,13 @@ class Box(dict):
             self._box_config['__ordered_box_values'].remove(key)
 
     def __delattr__(self, item):
+        """
+        Removes an item from the box.
+
+        Args:
+            self: (todo): write your description
+            item: (todo): write your description
+        """
         if self._box_config['frozen_box']:
             raise BoxError('Box is frozen')
         if item == '_box_config':
@@ -581,6 +790,13 @@ class Box(dict):
             self._box_config['__ordered_box_values'].remove(item)
 
     def pop(self, key, *args):
+        """
+        Remove an item from the dictionary.
+
+        Args:
+            self: (todo): write your description
+            key: (str): write your description
+        """
         if args:
             if len(args) != 1:
                 raise BoxError('pop() takes only one optional'
@@ -601,10 +817,22 @@ class Box(dict):
             return item
 
     def clear(self):
+        """
+        Clears the box.
+
+        Args:
+            self: (todo): write your description
+        """
         self._box_config['__ordered_box_values'] = []
         super(Box, self).clear()
 
     def popitem(self):
+        """
+        Remove and return an item ) pair.
+
+        Args:
+            self: (todo): write your description
+        """
         try:
             key = next(self.__iter__())
         except StopIteration:
@@ -612,16 +840,40 @@ class Box(dict):
         return key, self.pop(key)
 
     def __repr__(self):
+        """
+        Return a human - readable representation of this object.
+
+        Args:
+            self: (todo): write your description
+        """
         return '<Box: {0}>'.format(str(self.to_dict()))
 
     def __str__(self):
+        """
+        Return a string representation of this object.
+
+        Args:
+            self: (todo): write your description
+        """
         return str(self.to_dict())
 
     def __iter__(self):
+        """
+        Iterate over all keys.
+
+        Args:
+            self: (todo): write your description
+        """
         for key in self.keys():
             yield key
 
     def __reversed__(self):
+        """
+        Return an iterator over all keys
+
+        Args:
+            self: (todo): write your description
+        """
         for key in reversed(list(self.keys())):
             yield key
 
@@ -643,6 +895,13 @@ class Box(dict):
         return out_dict
 
     def update(self, item=None, **kwargs):
+        """
+        Updates an item with the given item.
+
+        Args:
+            self: (todo): write your description
+            item: (dict): write your description
+        """
         if not item:
             item = kwargs
         iter_over = item.items() if hasattr(item, 'items') else item
@@ -662,6 +921,14 @@ class Box(dict):
                 self.__setitem__(k, v)
 
     def setdefault(self, item, default=None):
+        """
+        Return the value of item.
+
+        Args:
+            self: (todo): write your description
+            item: (todo): write your description
+            default: (todo): write your description
+        """
         if item in self:
             return self[item]
 
@@ -767,6 +1034,16 @@ class BoxList(list):
     """
 
     def __init__(self, iterable=None, box_class=Box, **box_options):
+        """
+        Initialize the box box.
+
+        Args:
+            self: (todo): write your description
+            iterable: (todo): write your description
+            box_class: (todo): write your description
+            Box: (array): write your description
+            box_options: (dict): write your description
+        """
         self.box_class = box_class
         self.box_options = box_options
         self.box_org_ref = self.box_org_ref = id(iterable) if iterable else 0
@@ -775,6 +1052,11 @@ class BoxList(list):
                 self.append(x)
         if box_options.get('frozen_box'):
             def frozen(*args, **kwargs):
+                """
+                See : meth : meth : ~plugins ().
+
+                Args:
+                """
                 raise BoxError('BoxList is frozen')
 
             for method in ['append', 'extend', 'insert', 'pop',
@@ -782,16 +1064,38 @@ class BoxList(list):
                 self.__setattr__(method, frozen)
 
     def __delitem__(self, key):
+        """
+        Removes a box from the box.
+
+        Args:
+            self: (todo): write your description
+            key: (str): write your description
+        """
         if self.box_options.get('frozen_box'):
             raise BoxError('BoxList is frozen')
         super(BoxList, self).__delitem__(key)
 
     def __setitem__(self, key, value):
+        """
+        Set a box_options.
+
+        Args:
+            self: (todo): write your description
+            key: (str): write your description
+            value: (str): write your description
+        """
         if self.box_options.get('frozen_box'):
             raise BoxError('BoxList is frozen')
         super(BoxList, self).__setitem__(key, value)
 
     def append(self, p_object):
+        """
+        Append a box to the list.
+
+        Args:
+            self: (todo): write your description
+            p_object: (todo): write your description
+        """
         if isinstance(p_object, dict):
             try:
                 p_object = self.box_class(p_object, **self.box_options)
@@ -808,10 +1112,25 @@ class BoxList(list):
         super(BoxList, self).append(p_object)
 
     def extend(self, iterable):
+        """
+        Extend an iterable * iterable * with * iterable *.
+
+        Args:
+            self: (todo): write your description
+            iterable: (todo): write your description
+        """
         for item in iterable:
             self.append(item)
 
     def insert(self, index, p_object):
+        """
+        Inserts a widget.
+
+        Args:
+            self: (todo): write your description
+            index: (int): write your description
+            p_object: (todo): write your description
+        """
         if isinstance(p_object, dict):
             p_object = self.box_class(p_object, **self.box_options)
         elif isinstance(p_object, list):
@@ -820,17 +1139,42 @@ class BoxList(list):
         super(BoxList, self).insert(index, p_object)
 
     def __repr__(self):
+        """
+        Return a representation of this object.
+
+        Args:
+            self: (todo): write your description
+        """
         return "<BoxList: {0}>".format(self.to_list())
 
     def __str__(self):
+        """
+        Returns a string representation of the list.
+
+        Args:
+            self: (todo): write your description
+        """
         return str(self.to_list())
 
     def __copy__(self):
+        """
+        Returns a copy of this box.
+
+        Args:
+            self: (todo): write your description
+        """
         return BoxList((x for x in self),
                        self.box_class,
                        **self.box_options)
 
     def __deepcopy__(self, memodict=None):
+        """
+        Return a deep copy of this object.
+
+        Args:
+            self: (todo): write your description
+            memodict: (dict): write your description
+        """
         out = self.__class__()
         memodict = memodict or {}
         memodict[id(self)] = out
@@ -839,6 +1183,12 @@ class BoxList(list):
         return out
 
     def __hash__(self):
+        """
+        Returns the hash of the box.
+
+        Args:
+            self: (todo): write your description
+        """
         if self.box_options.get('frozen_box'):
             hashing = 98765
             hashing ^= hash(tuple(self))
@@ -846,6 +1196,12 @@ class BoxList(list):
         raise TypeError("unhashable type: 'BoxList'")
 
     def to_list(self):
+        """
+        Convert a list of lists into a list
+
+        Args:
+            self: (todo): write your description
+        """
         new_list = []
         for x in self:
             if x is self:
@@ -957,6 +1313,12 @@ class BoxList(list):
             return cls(data, **bx_args)
 
     def box_it_up(self):
+        """
+        Box up all_it_it_up.
+
+        Args:
+            self: (todo): write your description
+        """
         for v in self:
             if hasattr(v, 'box_it_up') and v is not self:
                 v.box_it_up()
@@ -989,6 +1351,12 @@ class ConfigBox(Box):
             return super(ConfigBox, self).__getattr__(item.lower())
 
     def __dir__(self):
+        """
+        Return the full path to the configuration dir.
+
+        Args:
+            self: (todo): write your description
+        """
         return super(ConfigBox, self).__dir__() + ['bool', 'int', 'float',
                                                    'list', 'getboolean',
                                                    'getfloat', 'getint']
@@ -1072,15 +1440,45 @@ class ConfigBox(Box):
     # loose configparser compatibility
 
     def getboolean(self, item, default=None):
+        """
+        Return the value as boolean
+
+        Args:
+            self: (todo): write your description
+            item: (todo): write your description
+            default: (todo): write your description
+        """
         return self.bool(item, default)
 
     def getint(self, item, default=None):
+        """
+        Return an int or int.
+
+        Args:
+            self: (todo): write your description
+            item: (todo): write your description
+            default: (todo): write your description
+        """
         return self.int(item, default)
 
     def getfloat(self, item, default=None):
+        """
+        Get float value as float
+
+        Args:
+            self: (todo): write your description
+            item: (todo): write your description
+            default: (todo): write your description
+        """
         return self.float(item, default)
 
     def __repr__(self):
+        """
+        Return a human - readable representation of this object.
+
+        Args:
+            self: (todo): write your description
+        """
         return '<ConfigBox: {0}>'.format(str(self.to_dict()))
 
 
@@ -1095,16 +1493,40 @@ class SBox(Box):
 
     @property
     def dict(self):
+        """
+        Return a dict representation of this object.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.to_dict()
 
     @property
     def json(self):
+        """
+        Returns the json representation of the object
+
+        Args:
+            self: (todo): write your description
+        """
         return self.to_json()
 
     if yaml_support:
         @property
         def yaml(self):
+            """
+            The yaml representation of this component.
+
+            Args:
+                self: (todo): write your description
+            """
             return self.to_yaml()
 
     def __repr__(self):
+        """
+        Return a human - readable representation of this object.
+
+        Args:
+            self: (todo): write your description
+        """
         return '<ShorthandBox: {0}>'.format(str(self.to_dict()))

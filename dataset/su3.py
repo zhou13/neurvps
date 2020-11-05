@@ -30,6 +30,12 @@ except Exception:
 
 
 def handle(iname):
+    """
+    Handle a vpts from a.
+
+    Args:
+        iname: (str): write your description
+    """
     prefix = iname.replace(".png", "")
     with open(f"{prefix}_camera.json") as f:
         js = json.load(f)
@@ -51,6 +57,11 @@ def handle(iname):
 
 
 def main():
+    """
+    Main function.
+
+    Args:
+    """
     args = docopt(__doc__)
     filelist = sorted(glob(args["<dir>"] + "/*/????_0.png"))
     parmap(handle, filelist)
