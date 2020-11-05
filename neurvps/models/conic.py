@@ -8,6 +8,16 @@ from neurvps.models.deformable import DeformConv
 
 class ConicConv(nn.Module):
     def __init__(self, c_in, c_out, kernel_size=3, bias=False):
+        """
+        Initialize kernel.
+
+        Args:
+            self: (todo): write your description
+            c_in: (int): write your description
+            c_out: (todo): write your description
+            kernel_size: (int): write your description
+            bias: (float): write your description
+        """
         super().__init__()
         self.deform_conv = DeformConv(
             c_in,
@@ -21,6 +31,14 @@ class ConicConv(nn.Module):
         self.kernel_size = _pair(kernel_size)
 
     def forward(self, input, vpts):
+        """
+        Perform forward computation.
+
+        Args:
+            self: (todo): write your description
+            input: (todo): write your description
+            vpts: (todo): write your description
+        """
         N, C, H, W = input.shape
         Kh, Kw = self.kernel_size
 

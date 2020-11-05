@@ -9,6 +9,14 @@ import mpl_toolkits.mplot3d
 
 
 def gold_spiral_sampling_patch(v, alpha, num_pts):
+    """
+    R calculate the spiral neighbor.
+
+    Args:
+        v: (todo): write your description
+        alpha: (float): write your description
+        num_pts: (int): write your description
+    """
     v1 = orth(v)
     v2 = np.cross(v, v1)
     v, v1, v2 = v[:, None], v1[:, None], v2[:, None]
@@ -20,6 +28,12 @@ def gold_spiral_sampling_patch(v, alpha, num_pts):
 
 
 def orth(v):
+    """
+    Return the orthogonal product of v.
+
+    Args:
+        v: (array): write your description
+    """
     x, y, z = v
     o = np.array([0.0, -z, y] if abs(x) < abs(y) else [-z, 0.0, x])
     o /= LA.norm(o)

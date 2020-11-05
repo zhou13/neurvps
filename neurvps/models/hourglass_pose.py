@@ -16,6 +16,16 @@ class Bottleneck2D(nn.Module):
     expansion = 2
 
     def __init__(self, inplanes, planes, stride=1, resample=None):
+        """
+        Initialize the convolutional layer.
+
+        Args:
+            self: (todo): write your description
+            inplanes: (todo): write your description
+            planes: (todo): write your description
+            stride: (int): write your description
+            resample: (int): write your description
+        """
         super(Bottleneck2D, self).__init__()
 
         self.bn1 = nn.BatchNorm2d(inplanes)
@@ -29,6 +39,13 @@ class Bottleneck2D(nn.Module):
         self.stride = stride
 
     def forward(self, x):
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+        """
         residual = x
 
         out = self.bn1(x)
@@ -53,18 +70,47 @@ class Bottleneck2D(nn.Module):
 
 class Hourglass(nn.Module):
     def __init__(self, block, num_blocks, planes, depth):
+        """
+        Initialize the block.
+
+        Args:
+            self: (todo): write your description
+            block: (todo): write your description
+            num_blocks: (int): write your description
+            planes: (todo): write your description
+            depth: (float): write your description
+        """
         super(Hourglass, self).__init__()
         self.depth = depth
         self.block = block
         self.hg = self._make_hour_glass(block, num_blocks, planes, depth)
 
     def _make_residual(self, block, num_blocks, planes):
+        """
+        Generate residuals of residuals.
+
+        Args:
+            self: (todo): write your description
+            block: (todo): write your description
+            num_blocks: (int): write your description
+            planes: (str): write your description
+        """
         layers = []
         for i in range(0, num_blocks):
             layers.append(block(planes * block.expansion, planes))
         return nn.Sequential(*layers)
 
     def _make_hour_glass(self, block, num_blocks, planes, depth):
+        """
+        Generate a list of blocks.
+
+        Args:
+            self: (todo): write your description
+            block: (todo): write your description
+            num_blocks: (int): write your description
+            planes: (str): write your description
+            depth: (int): write your description
+        """
         hg = []
         for i in range(depth):
             res = []
@@ -76,6 +122,14 @@ class Hourglass(nn.Module):
         return nn.ModuleList(hg)
 
     def _hour_glass_forward(self, n, x):
+        """
+        Perform a forward computation.
+
+        Args:
+            self: (todo): write your description
+            n: (todo): write your description
+            x: (todo): write your description
+        """
         up1 = self.hg[n - 1][0](x)
         low1 = F.max_pool2d(x, 2, stride=2)
         low1 = self.hg[n - 1][1](low1)
@@ -90,11 +144,30 @@ class Hourglass(nn.Module):
         return out
 
     def forward(self, x):
+        """
+        Forward forward forward forward forward forward forward.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+        """
         return self._hour_glass_forward(self.depth, x)
 
 
 class HourglassNet(nn.Module):
     def __init__(self, planes, block, head, depth, num_stacks, num_blocks):
+        """
+        Initialize the layers.
+
+        Args:
+            self: (todo): write your description
+            planes: (todo): write your description
+            block: (todo): write your description
+            head: (todo): write your description
+            depth: (float): write your description
+            num_stacks: (int): write your description
+            num_blocks: (int): write your description
+        """
         super(HourglassNet, self).__init__()
 
         self.inplanes = 64
@@ -129,6 +202,16 @@ class HourglassNet(nn.Module):
         self.score_ = nn.ModuleList(score_)
 
     def _make_residual(self, block, planes, blocks, stride=1):
+        """
+        Make residual residuals.
+
+        Args:
+            self: (todo): write your description
+            block: (todo): write your description
+            planes: (str): write your description
+            blocks: (todo): write your description
+            stride: (int): write your description
+        """
         resample = None
         if stride != 1 or self.inplanes != planes * block.expansion:
             resample = nn.Conv2d(
@@ -141,6 +224,14 @@ class HourglassNet(nn.Module):
         return nn.Sequential(*layers)
 
     def _make_fc(self, inplanes, outplanes):
+        """
+        Make a convolution.
+
+        Args:
+            self: (todo): write your description
+            inplanes: (bool): write your description
+            outplanes: (todo): write your description
+        """
         return nn.Sequential(
             nn.Conv2d(inplanes, outplanes, kernel_size=1),
             nn.BatchNorm2d(inplanes),
@@ -148,6 +239,13 @@ class HourglassNet(nn.Module):
         )
 
     def forward(self, x):
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            x: (todo): write your description
+        """
         out = []
         x = self.conv1(x)
         x = self.bn1(x)
@@ -173,6 +271,11 @@ class HourglassNet(nn.Module):
 
 
 def hg(**kwargs):
+    """
+    Create a hg2d model.
+
+    Args:
+    """
     model = HourglassNet(
         planes=kwargs["planes"],
         block=Bottleneck2D,
@@ -185,6 +288,11 @@ def hg(**kwargs):
 
 
 def main():
+    """
+    Main function.
+
+    Args:
+    """
     hg(depth=2, num_stacks=1, num_blocks=1)
 
 

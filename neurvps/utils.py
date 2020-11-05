@@ -11,16 +11,37 @@ import matplotlib.pyplot as plt
 
 class benchmark(object):
     def __init__(self, msg, enable=True, fmt="%0.3g"):
+        """
+        Initialize the logger.
+
+        Args:
+            self: (todo): write your description
+            msg: (str): write your description
+            enable: (bool): write your description
+            fmt: (str): write your description
+        """
         self.msg = msg
         self.fmt = fmt
         self.enable = enable
 
     def __enter__(self):
+        """
+        Starts the timer.
+
+        Args:
+            self: (todo): write your description
+        """
         if self.enable:
             self.start = timer()
         return self
 
     def __exit__(self, *args):
+        """
+        Exit exit.
+
+        Args:
+            self: (todo): write your description
+        """
         if self.enable:
             t = timer() - self.start
             print(("%s : " + self.fmt + " seconds") % (self.msg, t))
@@ -28,6 +49,13 @@ class benchmark(object):
 
 
 def plot_image_grid(im, title):
+    """
+    Plot a matplot as an image.
+
+    Args:
+        im: (array): write your description
+        title: (str): write your description
+    """
     plt.figure()
     for i in range(16):
         plt.subplot(4, 4, i + 1)
@@ -37,6 +65,14 @@ def plot_image_grid(im, title):
 
 
 def quiver(x, y, ax):
+    """
+    Quiver a scatter.
+
+    Args:
+        x: (todo): write your description
+        y: (todo): write your description
+        ax: (todo): write your description
+    """
     ax.set_xlim(0, x.shape[1])
     ax.set_ylim(x.shape[0], 0)
     ax.quiver(
@@ -59,10 +95,24 @@ def np_softmax(x, axis=0):
 
 
 def argsort2d(arr):
+    """
+    Return indices of np.
+
+    Args:
+        arr: (array): write your description
+    """
     return np.dstack(np.unravel_index(np.argsort(arr.ravel()), arr.shape))[0]
 
 
 def __parallel_handle(f, q_in, q_out):
+    """
+    Parse a function f from a function f.
+
+    Args:
+        f: (str): write your description
+        q_in: (dict): write your description
+        q_out: (bool): write your description
+    """
     while True:
         i, x = q_in.get()
         if i is None:
@@ -71,6 +121,19 @@ def __parallel_handle(f, q_in, q_out):
 
 
 def parmap(f, X, nprocs=multiprocessing.cpu_count(), progress_bar=lambda x: x):
+    """
+    Parmap function.
+
+    Args:
+        f: (todo): write your description
+        X: (todo): write your description
+        nprocs: (todo): write your description
+        multiprocessing: (todo): write your description
+        cpu_count: (int): write your description
+        progress_bar: (todo): write your description
+        x: (todo): write your description
+        x: (todo): write your description
+    """
     if nprocs == 0:
         nprocs = multiprocessing.cpu_count()
     q_in = multiprocessing.Queue(1)

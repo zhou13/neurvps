@@ -19,6 +19,14 @@ from neurvps.config import C
 
 class WireframeDataset(Dataset):
     def __init__(self, rootdir, split):
+        """
+        Initialize all files.
+
+        Args:
+            self: (todo): write your description
+            rootdir: (str): write your description
+            split: (int): write your description
+        """
         self.rootdir = rootdir
         filelist = sorted(glob(f"{rootdir}/*/*.png"))
 
@@ -32,9 +40,22 @@ class WireframeDataset(Dataset):
         print(f"n{split}:", self.size)
 
     def __len__(self):
+        """
+        Returns the length of the queue.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.size
 
     def __getitem__(self, idx):
+        """
+        Retrieve image from file.
+
+        Args:
+            self: (todo): write your description
+            idx: (list): write your description
+        """
         iname = self.filelist[idx % len(self.filelist)]
         image = skimage.io.imread(iname).astype(float)[:, :, :3]
         image = np.rollaxis(image, 2).copy()
@@ -45,6 +66,14 @@ class WireframeDataset(Dataset):
 
 class ScanNetDataset(Dataset):
     def __init__(self, rootdir, split):
+        """
+        Initialize a file.
+
+        Args:
+            self: (todo): write your description
+            rootdir: (str): write your description
+            split: (int): write your description
+        """
         self.rootdir = rootdir
         self.split = split
 
@@ -60,9 +89,22 @@ class ScanNetDataset(Dataset):
         print(f"n{split}:", self.size)
 
     def __len__(self):
+        """
+        Returns the length of the queue.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.size
 
     def __getitem__(self, idx):
+        """
+        Retrieve an image from file.
+
+        Args:
+            self: (todo): write your description
+            idx: (list): write your description
+        """
         iname = self.filelist[idx % len(self.filelist)]
         image = skimage.io.imread(iname)[:, :, :3]
         with np.load(iname.replace("color.png", "vanish.npz")) as npz:
@@ -87,6 +129,14 @@ class ScanNetDataset(Dataset):
 
 class Tmm17Dataset(Dataset):
     def __init__(self, rootdir, split):
+        """
+        Initialize root directory
+
+        Args:
+            self: (todo): write your description
+            rootdir: (str): write your description
+            split: (int): write your description
+        """
         self.rootdir = rootdir
         self.split = split
 
@@ -99,9 +149,22 @@ class Tmm17Dataset(Dataset):
         print(f"n{split}:", self.size)
 
     def __len__(self):
+        """
+        Returns the length of the queue.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.size
 
     def __getitem__(self, idx):
+        """
+        Get an item from an image.
+
+        Args:
+            self: (todo): write your description
+            idx: (list): write your description
+        """
         iname = self.filelist[idx % len(self.filelist)]
         image = skimage.io.imread(iname)
         tname = iname.replace(".jpg", ".txt")
@@ -134,6 +197,14 @@ class Tmm17Dataset(Dataset):
 
 
 def augment(image, vpts, division):
+    """
+    Return a 2d to image
+
+    Args:
+        image: (array): write your description
+        vpts: (todo): write your description
+        division: (todo): write your description
+    """
     if division == 1:  # left-right flip
         return image[:, ::-1].copy(), (vpts * [-1, 1, 1]).copy()
     elif division == 2:  # up-down flip
@@ -144,6 +215,15 @@ def augment(image, vpts, division):
 
 
 def intersect(a0, a1, b0, b1):
+    """
+    Returns the intersection of two vectors.
+
+    Args:
+        a0: (int): write your description
+        a1: (int): write your description
+        b0: (int): write your description
+        b1: (int): write your description
+    """
     c0 = ccw(a0, a1, b0)
     c1 = ccw(a0, a1, b1)
     d0 = ccw(b0, b1, a0)
@@ -155,12 +235,28 @@ def intersect(a0, a1, b0, b1):
 
 
 def ccw(c, a, b):
+    """
+    Returns : mathw ( a b ) of a and b.
+
+    Args:
+        c: (todo): write your description
+        a: (todo): write your description
+        b: (todo): write your description
+    """
     a0 = a - c
     b0 = b - c
     return a0[0] * b0[1] - b0[0] * a0[1]
 
 
 def crop(shape, scale=(0.35, 1.0), ratio=(9 / 16, 16 / 9)):
+    """
+    Randomly crop.
+
+    Args:
+        shape: (int): write your description
+        scale: (float): write your description
+        ratio: (float): write your description
+    """
     for attempt in range(20):
         area = shape[0] * shape[1]
         target_area = random.uniform(*scale) * area

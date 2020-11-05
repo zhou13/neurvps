@@ -18,12 +18,28 @@ from neurvps.models.conic import ConicConv
 
 class VanishingNet(nn.Module):
     def __init__(self, backbone, output_stride=4, upsample_scale=1):
+        """
+        Initialize the network.
+
+        Args:
+            self: (todo): write your description
+            backbone: (todo): write your description
+            output_stride: (str): write your description
+            upsample_scale: (float): write your description
+        """
         super().__init__()
         self.backbone = backbone
         self.anet = ApolloniusNet(output_stride, upsample_scale)
         self.loss = nn.BCEWithLogitsLoss(reduction="none")
 
     def forward(self, input_dict):
+        """
+        Perform forward computation.
+
+        Args:
+            self: (todo): write your description
+            input_dict: (dict): write your description
+        """
         x = self.backbone(input_dict["image"])[0]
         N, _, H, W = x.shape
         test = input_dict.get("test", False)
@@ -43,6 +59,12 @@ class VanishingNet(nn.Module):
         for n in range(N):
 
             def add_sample(p):
+                """
+                Add a sample.
+
+                Args:
+                    p: (array): write your description
+                """
                 vpts.append(to_pixel(p))
                 y.append(to_label(p, vpts_gt[n]))
 
@@ -80,6 +102,14 @@ class VanishingNet(nn.Module):
 
 class ApolloniusNet(nn.Module):
     def __init__(self, output_stride, upsample_scale):
+        """
+        Initialize the network.
+
+        Args:
+            self: (todo): write your description
+            output_stride: (str): write your description
+            upsample_scale: (float): write your description
+        """
         super().__init__()
         self.fc0 = nn.Conv2d(64, 32, 1)
         self.relu = nn.ReLU(inplace=True)
@@ -108,6 +138,14 @@ class ApolloniusNet(nn.Module):
         self.stride = output_stride / upsample_scale
 
     def forward(self, input, vpts):
+        """
+        Forward computation.
+
+        Args:
+            self: (todo): write your description
+            input: (todo): write your description
+            vpts: (todo): write your description
+        """
         # for now we did not do interpolation
         if self.upsample_scale != 1:
             input = F.interpolate(input, scale_factor=self.upsample_scale)
@@ -154,6 +192,12 @@ class ApolloniusNet(nn.Module):
 
 
 def orth(v):
+    """
+    Return the orthogonal product of v.
+
+    Args:
+        v: (array): write your description
+    """
     x, y, z = v
     o = np.array([0.0, -z, y] if abs(x) < abs(y) else [-z, 0.0, x])
     o /= LA.norm(o)
@@ -161,6 +205,14 @@ def orth(v):
 
 
 def sample_sphere(v, theta0, theta1):
+    """
+    Sample a random unit vector from theta.
+
+    Args:
+        v: (todo): write your description
+        theta0: (float): write your description
+        theta1: (float): write your description
+    """
     costheta = random.uniform(math.cos(theta1), math.cos(theta0))
     phi = random.random() * math.pi * 2
     v1 = orth(v)
@@ -171,11 +223,24 @@ def sample_sphere(v, theta0, theta1):
 
 
 def to_label(w, vpts):
+    """
+    Convert a list of vertices to a label.
+
+    Args:
+        w: (str): write your description
+        vpts: (array): write your description
+    """
     degree = np.min(np.arccos(np.abs(vpts @ w).clip(max=1)))
     return [int(degree < res + 1e-6) for res in M.multires]
 
 
 def to_pixel(w):
+    """
+    Convert pixel coordinates to pixel coordinates.
+
+    Args:
+        w: (todo): write your description
+    """
     x = w[0] / w[2] * C.io.focal_length * 256 + 256
     y = -w[1] / w[2] * C.io.focal_length * 256 + 256
     return y, x
