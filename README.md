@@ -121,6 +121,8 @@ Execute the following commands to compute and plot the angular accuracy (AA) cur
 python eval.py -d 0 logs/YOUR_LOG/config.yaml logs/YOUR_LOG/checkpoint_best.pth.tar
 ```
 ### FAQ
+#### I do not understand your format of vanishing points.
+Uncomment [these lines](https://github.com/zhou13/neurvps/blob/edac1a85d5a4f75079da6734957e3e92927e1fcc/neurvps/datasets.py#L71-L83) or [these lines](https://github.com/zhou13/neurvps/blob/edac1a85d5a4f75079da6734957e3e92927e1fcc/neurvps/datasets.py#L125-L127) to visualize vanishing points overlaid with 2D images.
 
 #### What is the unit of focal length in the yaml and why do I need it?
 **A:** The focal length in our implementation is in the unit of 2/w pixel (w is the image width. only a square image is supported). This follows the convention of the OpenGL projection matrix so that to make it resolution invariant.  The focal length is used for uniform sampling of the position of vanishing points. If it is not known, you can set it to some common focal length for your categories of images, as we do in [config/tmm17.yaml](https://github.com/zhou13/neurvps/blob/master/config/tmm17.yaml).
