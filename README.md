@@ -72,7 +72,7 @@ conda create -y -n neurvps
 source activate neurvps
 # Replace cudatoolkit=10.1 with your CUDA version: https://pytorch.org/get-started/
 conda install -y pytorch cudatoolkit=10.1 -c pytorch
-conda install -y tensorboardx -c conda-forge
+conda install -y tensorboardx gdown -c conda-forge
 conda install -y pyyaml docopt matplotlib scikit-image opencv tqdm
 mkdir data logs
 ```
@@ -81,9 +81,9 @@ mkdir data logs
 Make sure `curl` is installed on your system and execute
 ```bash
 cd data
-../misc/gdrive-download.sh 1yRwLv28ozRvjsf9wGwAqzya1xFZ5wYET su3.tar.xz
-../misc/gdrive-download.sh 1rpQNbZQEUff2j2rxr3mBl6xohGFl6sLv tmm17.tar.xz
-../misc/gdrive-download.sh 1y_O9PxZhJ_Ml297FgoWMBLvjC1BvTs9A scannet.tar.xz
+gdown 1yRwLv28ozRvjsf9wGwAqzya1xFZ5wYET -O su3.tar.xz
+gdown 1rpQNbZQEUff2j2rxr3mBl6xohGFl6sLv -O tmm17.tar.xz
+gdown 1y_O9PxZhJ_Ml297FgoWMBLvjC1BvTs9A -O scannet.tar.xz
 tar xf su3.tar.xz
 tar xf tmm17.tar.xz
 tar xf scannet.tar.xz
@@ -91,11 +91,10 @@ rm *.tar.xz
 cd ..
 ```
 
-If `gdrive-download.sh` does not work for you, you can download the pre-processed datasets
+If `gdown` does not work for you, you can download the pre-processed datasets
 manually from our [Google
 Drive](https://drive.google.com/drive/folders/1xBcHj584zGxhMboZNJHWlAe_XIbHfC34) and proceed
 accordingly.
-
 
 ### Training
 Execute the following commands to train the neural networks from scratch on 2 GPUs (GPU 0 and GPU 1, specified by `-d 0,1`) with the default parameters:
@@ -105,7 +104,9 @@ python ./train.py -d 0,1 --identifier tmm17 config/tmm17.yaml
 python ./train.py -d 0,1 --identifier scannet config/scannet.yaml
 ```
 
-The checkpoints and logs will be written to `logs/` accordingly. It has been reported that it is possible to achieve higher performance with 4-GPU training, though the training process is more volatile.
+The checkpoints and logs will be written to `logs/` accordingly.
+
+**Note:** For TMM17 dataset, due to its small size the model is more senstive to the initialization. You may need to train it multiple times to reach the same performance as the pre-trained model.  For SU3, it has been reported that it is possible to achieve higher performance with 4-GPU training than the reported one in the paper, though the training process is more volatile. 
 
 ### Pre-trained Models
 
