@@ -72,7 +72,7 @@ conda create -y -n neurvps
 source activate neurvps
 # Replace cudatoolkit=10.1 with your CUDA version: https://pytorch.org/get-started/
 conda install -y pytorch cudatoolkit=10.1 -c pytorch
-conda install -y tensorboardx -c conda-forge
+conda install -y tensorboardx gdown -c conda-forge
 conda install -y pyyaml docopt matplotlib scikit-image opencv tqdm
 mkdir data logs
 ```
@@ -84,7 +84,7 @@ Make sure `curl` is installed on your system and execute
 ```bash
 cd data
 wget https://huggingface.co/yichaozhou/neurvps/resolve/main/Data/scannet-vp/scannet-vp.z0{1..7}
-wget https://huggingface.co/yichaozhou/neurvps/resolve/main/Data/scannet-vp/scannet-vp.z01
+wget https://huggingface.co/yichaozhou/neurvps/resolve/main/Data/scannet-vp/scannet-vp.zip
 zip -FF scannet-vp.zip --out scannet-vp-full.zip
 unzip -FF scannet-vp-full.zip
 wget https://huggingface.co/yichaozhou/neurvps/resolve/main/Data/su3.tar.xz
@@ -108,7 +108,9 @@ python ./train.py -d 0,1 --identifier tmm17 config/tmm17.yaml
 python ./train.py -d 0,1 --identifier scannet config/scannet.yaml
 ```
 
-The checkpoints and logs will be written to `logs/` accordingly. It has been reported that it is possible to achieve higher performance with 4-GPU training, though the training process is more volatile.
+The checkpoints and logs will be written to `logs/` accordingly.
+
+**Note:** For TMM17 dataset, due to its small size the model is more senstive to the initialization. You may need to train it multiple times to reach the same performance as the pre-trained model.  For SU3, it has been reported that it is possible to achieve higher performance with 4-GPU training than the reported one in the paper, though the training process is more volatile. 
 
 ### Pre-trained Models
 
